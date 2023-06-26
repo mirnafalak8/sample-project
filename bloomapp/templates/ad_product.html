@@ -1,0 +1,112 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 600px;
+      margin: auto;
+      height: 300px;
+    }
+
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    h6{
+      color: black;
+      margin: auto;
+      padding: 10%;
+      font-size: 60px;
+    }
+    #f2 {
+      width: 600px;
+      margin: auto;
+      height: 500px;
+    }
+</style>
+<br>
+<!-- <h2 class="text-center">Product Form</h2> -->
+
+<div class="container p-3" >
+  <form method="post" action="{% url 'productpage' %}" enctype="multipart/form-data" id="f2">
+    {% csrf_token %}
+    <h2 class="alert alert-info text-center mb-4">Add Product</h2>
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control form-control-sm" id="name" name="name" required>
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <select class="form-control form-control-sm" id="category" name="select" required>
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea class="form-control form-control-sm" id="description" name="description"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="price" class="form-label">Price</label>
+      <input type="number" class="form-control form-control-sm" id="price" name="price" required>
+    </div>
+    <div class="mb-3">
+      <label for="image" class="form-label">Image</label>
+      <input type="file" class="form-control form-control-sm" id="image" name="file">
+    </div>
+    <button class="btn btn-primary w-100" type="submit">Add Product</button>
+  </form>
+</div>
+<br>
+<div class="container mt-5">
+    <h3 class="alert alert-info text-center mb-5">
+        SHOW PRODUCT DETAILS
+    </h3>
+    <div class="row">
+        <div class="col-sm-12 ">
+            <table class="container">
+                <thead>
+                    <tr>
+                        <th>PRODUCT NAME</th>
+                        <th>CATEGORY</th>
+                        <th>DESCRIPTION</th>
+                        <th>PRICE</th>
+                        <th>IMAGE</th>
+                        <th>ACTION..</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in product %}
+                    <tr>
+                        <td>{{ p.name }}</td>
+                        <td>{{ p.category.name }}</td>
+                        <td>{{ p.description }}</td>
+                        <td>{{ p.price }}</td>
+                        <td>
+                            {% if p.image %}
+                            <br>
+                            <img src="{{ p.image.url }}" class="w-25" width="40px">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'p_edit_form' p.id  %}" class="btn btn-outline-dark btn-sm">Edit</a>
+                            <a href="{% url 'p_delete_form' p.id  %}" class="btn btn-dark btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<br><br><br>
+{% endblock %}

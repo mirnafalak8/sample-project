@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+  .custom-container {
+    background-image: url('https://static.vecteezy.com/system/resources/previews/005/611/504/non_2x/successful-businessman-jumping-with-joy-business-success-cartoon-male-character-concept-business-people-emotions-flat-style-cartoon-illustration-free-vector.jpg');
+    height: 500px; 
+    width: 1000px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    margin-left: 60px;
+    position: relative;
+  }
+
+  .custom-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(160, 156, 156, 0.6); /* Adjust the opacity as needed */
+  }
+
+  @media (max-width: 576px) {
+    .custom-container {
+      height: 300px; 
+    }
+  }
+
+  .custom-card {
+    color: #fff;
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+  }
+</style>
+
+<div class="container m-5 ">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="custom-container">
+        <div class="custom-card">
+          <h1 class="text-center">Your Order has been Successfully Submitted!</h1>
+          <p class="text-center">Thank you for your purchase.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

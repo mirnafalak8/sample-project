@@ -1,0 +1,145 @@
+<!-- place_order_page.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1>Place Order</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Address</h3>
+      <form id="placeOrderForm" method="post" action="{% url 'place_order' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="address" class="form-label">Address:</label>
+          <input type="text" name="address" id="address" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="city" class="form-label">City:</label>
+          <input type="text" name="city" id="city" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="state" class="form-label">State:</label>
+          <input type="text" name="state" id="state" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="postal_code" class="form-label">Pin Code:</label>
+          <input type="text" name="postal_code" id="postal_code" class="form-control">
+        </div>
+    </div>
+    <div class="col-md-6">
+      <h3>Payment Method</h3>
+      <div class="accordion" id="paymentAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="creditCardHeader">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#creditCardCollapse" aria-expanded="true" aria-controls="creditCardCollapse">
+              Credit Card <i class="bi bi-chevron-down"></i>
+            </button>
+          </h2>
+          <div id="creditCardCollapse" class="accordion-collapse collapse show" aria-labelledby="creditCardHeader" data-bs-parent="#paymentAccordion">
+            <div class="accordion-body">
+              <!-- <p>Total Amount: <i class="fa fa-inr"></i>{{ total_amount }}</p> -->
+              <p>Enter your credit card details:</p>
+              <div class="mb-3">
+                <label for="cardNumber" class="form-label">Card Number:</label>
+                <input type="text" name="cardNumber" id="cardNumber" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="cardHolderName" class="form-label">Card Holder Name:</label>
+                <input type="text" name="cardHolderName" id="cardHolderName" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="expirationDate" class="form-label">Expiration Date:</label>
+                <input type="text" name="expirationDate" id="expirationDate" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="cvv" class="form-label">CVV:</label>
+                <input type="text" name="cvv" id="cvv" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="debitCardHeader">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#debitCardCollapse" aria-expanded="false" aria-controls="debitCardCollapse">
+              Debit Card <i class="bi bi-chevron-down"></i>
+            </button>
+          </h2>
+          <div id="debitCardCollapse" class="accordion-collapse collapse" aria-labelledby="debitCardHeader" data-bs-parent="#paymentAccordion">
+            <div class="accordion-body">
+              <!-- <p>Total Amount: <i class="fa fa-inr"></i>{{ total_amount }}</p> -->
+              <p>Enter your debit card details:</p>
+              <div class="mb-3">
+                <label for="debitCardNumber" class="form-label">Debit Card Number:</label>
+                <input type="text" name="debitCardNumber" id="debitCardNumber" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="debitCardHolderName" class="form-label">Debit Card Holder Name:</label>
+                <input type="text" name="debitCardHolderName" id="debitCardHolderName" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="debitExpirationDate" class="form-label">Debit Card Expiration Date:</label>
+                <input type="text" name="debitExpirationDate" id="debitExpirationDate" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="debitCvv" class="form-label">Debit Card CVV:</label>
+                <input type="text" name="debitCvv" id="debitCvv" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="cashOnDeliveryHeader">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cashOnDeliveryCollapse" aria-expanded="false" aria-controls="cashOnDeliveryCollapse">
+              Cash on Delivery <i class="bi bi-chevron-down"></i>
+            </button>
+          </h2>
+          <div id="cashOnDeliveryCollapse" class="accordion-collapse collapse" aria-labelledby="cashOnDeliveryHeader" data-bs-parent="#paymentAccordion">
+            <div class="accordion-body">
+              <!-- <p>Total Amount: <i class="fa fa-inr"></i>{{ total_amount }}</p> -->
+              <p>Pay cash on delivery when your order arrives.</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="netBankingHeader">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#netBankingCollapse" aria-expanded="false" aria-controls="netBankingCollapse">
+              Net Banking <i class="bi bi-chevron-down"></i>
+            </button>
+          </h2>
+          <div id="netBankingCollapse" class="accordion-collapse collapse" aria-labelledby="netBankingHeader" data-bs-parent="#paymentAccordion">
+            <div class="accordion-body">
+                <!-- <p>Total Amount: <i class="fa fa-inr"></i>{{ total_amount }}</p> -->
+              <p>Select your bank and proceed with the payment:</p>
+              <div class="mb-3">
+                <label for="bank" class="form-label">Bank:</label>
+                <select name="bank" id="bank" class="form-select">
+                  <option value="bank1">SBI</option>
+                  <option value="bank2">FEDERAL</option>
+                  <option value="bank3">CANARA</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center">
+    {% if not order_placed %}
+      <input type="submit" value="Place Order" class="btn btn-dark mt-5 btn-lg px-5">
+    {% endif %}
+  </div>
+</form>
+</div>
+<br><br><br>
+<script>
+  // Disable the "Order Now" button in ordered_items.html when the form is submitted
+  document.getElementById('placeOrderForm').addEventListener('submit', function() {
+    const orderButtons = document.getElementsByClassName('order-button');
+    for (let i = 0; i < orderButtons.length; i++) {
+      orderButtons[i].setAttribute('disabled', 'disabled');
+    }
+  });
+</script>
+
+{% endblock %}

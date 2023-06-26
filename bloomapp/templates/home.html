@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Website</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+    .card-carousel-container {
+      position: relative;
+    }
+
+    #demo.carousel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .card-container {
+      position: relative;
+      padding-top: 200px;
+      z-index: 2;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    /* body { font-family: sans-serif; } */
+
+    .carousel {
+      background: #FAFAFA;
+    }
+
+    .carousel-cell {
+      width: 28%;
+      height: 200px;
+      margin-right: 10px;
+      background: #8C8;
+      border-radius: 5px;
+      counter-increment: carousel-cell;
+    }
+
+    /* cell number */
+    .carousel-cell:before {
+      display: block;
+      text-align: center;
+      content: counter(carousel-cell);
+      line-height: 200px;
+      font-size: 80px;
+      color: white;
+    }
+
+    .row {
+      margin-right: -15px;
+      margin-left: -15px;
+    }
+
+    .col-md-4,
+    .col-md-8 {
+      padding-right: 7.5px;
+      padding-left: 7.5px;
+    }
+
+    .card {
+      overflow: hidden;
+    }
+
+    .card-img {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    .card-title {
+      margin-bottom: 10px;
+    }
+
+    .cell {
+      /* width: 291px; */
+      /* height: 438px; */
+      margin: 0 15px;
+      overflow: hidden;
+    }
+
+    .cell img {
+      /* width: 291px; */
+      /* height: 438px; */
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg" id="nav1">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="https://www.inbloomhomestead.com/wp-content/uploads/2021/04/logo-new-2-300x157.png" width="120px" height="50px" class="d-inline-block align-top" alt="">
+        </a>
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link mx-sm-3" href="{% url 'allproducts' %}">Products</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" action="{% url 'product_search' %}" method="get">
+                    <div class="input-group">
+                        <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search" id="search">
+                        <button class="btn btn-outline-dark" type="submit">Search</button>
+                    </div>
+                </form>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-bs-toggle="popover" data-bs-placement="bottom"
+                    title="<h6 class='popover-title'>Becoming a member</h6>"
+                    data-bs-content="<div class='text-center'><a class='btn btn-warning login-link' href='{% url 'signin_page' %}'>Login</a><br><br><a class='btn btn-warning signup-link' href='{% url 'signup' %}'>Sign up</a></div>"
+                    data-bs-html="true">
+                    Account
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'about_us' %}">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'contact_view' %}">Contact</a>
+            </li>
+            <li class="nav-item">
+                <div class="flex-container">
+                    <div><a href="{% url 'ordered_items' %}" style="text-decoration: none;color: white;font-size: 16px;">Orders</a></div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <div class="flex">
+                    <a href="{% url 'cart' %}" style="color: black;">
+                        <div class="div1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" style="margin-left: 10px;padding-left: 10px;" fill="currentColor" class="bi bi-basket-fill" viewBox="0 0 16 16">
+                                <path d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717L5.07 1.243zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3z"/>
+                            </svg>
+                            <span class="badge badge-danger bg-danger" style="margin-top: 20px;">{{ total_quantity }}</span>
+                        </div>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+  <div class="container-fluid">
+    <ul class="nav justify-content p-1" id="nav2">
+      <li>
+        <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo">
+          <span class="navbar-toggler-icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+        </button>
+      </li>
+      <li class="nav-item" style="margin-left: 220px;">
+        <a class="nav-link text-white" href="{% url 'categories' category_name='Mobile' %}">Mobiles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'fashion_categories_view' category_names='Ladies,Gents,Kids' %}">Fashion</a>
+      </li>      
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'electronics_categories_view' category_names='laptop,mobile' %}">Electronics</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'categories' category_name='home' %}">Home Decor</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'appliances_categories_view' category_names='AC,microwaves,washing machine,Refrigerators' %}">Appliances</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'categories' category_name='bags & luggage' %}">Travel</a>
+      </li>
+      <li class="nav-item dropdown">
+        <select class="form-select" aria-label="Default select example" onchange="window.location.href = this.value;" style="background-color: transparent;color: white;">
+          <option value="" style="background-color: transparent;color: #A14F81;">category</option>
+          {% for category in categories %}
+            <option style="background-color: transparent;color: #A14F81;" value="{% url 'categories' category_name=category.name %}">{{ category.name }}</option>
+          {% endfor %}
+        </select>    
+      </li>    
+    </ul>
+  </div>
+  <div class="offcanvas offcanvas-start" id="demo">
+    <div class="offcanvas-header">
+      <h1 class="offcanvas-title" style="color: #A14F81; font-size: 40px;font-weight: 700;">
+        <img src="https://www.inbloomhomestead.com/wp-content/uploads/2021/04/logo-new-2-300x157.png" alt=""
+          width="90px">In Bloom
+      </h1>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <hr class="my-2 bg-light" style="height: 5px;">
+    <div class="offcanvas-body">
+      <div class="container">
+        <ul class="list-group list-unstyled">
+          <li class="py-3">
+            <a href="#" class="menu-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Home">
+              <i class="fa fa-home fa-lg me-2"></i> Home
+            </a>
+          </li>
+          <li class="py-3">
+            <a href="{% url 'allproducts' %}" class="menu-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Products">
+              <i class="fa fa-shopping-bag fa-lg me-2"></i> Products
+            </a>
+          </li>
+          <li class="py-3">
+            <a href="#" id="categoryDropdown" class="menu-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-th fa-lg me-2"></i> Category
+            </a>            
+            <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+              {% for category in categories %}
+                <li><a class="dropdown-item" href="{% url 'categories' category_name=category.name %}">{{ category.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </li>                      
+          <li class="py-3">
+            <a href="{% url 'wishlist' %}" class="menu-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Wishlist">
+              <i class="fa fa-heart fa-lg me-2"></i> Wishlist
+            </a>
+          </li>
+          <li class="py-3">
+            <a href="#" class="menu-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Order">
+              <i class="fa fa-shopping-cart fa-lg me-2"></i> Cart
+              <span class="badge badge-danger bg-danger">{{ total_quantity }}</span>
+            </a>
+          </li>
+          <li class="py-3">
+            <a href="#" class="menu-link" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+              <i class="fa fa-cog fa-lg me-2"></i> Settings
+            </a>
+          </li>
+          <li class="py-3">
+            <a href="{% url 'logout' %}" class="menu-link" data-bs-toggle="tooltip" data-bs-placement="right"
+              title="Logout">
+              <i class="fa fa-sign-out fa-lg me-2"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="container-fluid">
+    <div class="card-carousel-container">
+      <div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+        <!-- Indicators/dots -->
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+          <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+          <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+        </div>
+
+        <!-- The slideshow/carousel -->
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="https://m.media-amazon.com/images/I/61aURrton0L._SX3000_.jpg" alt="Los Angeles"
+              class="d-block w-100">
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://images-eu.ssl-images-amazon.com/images/G/31/img23/Beauty/GW/ATF/revised/new/Skincare-Herofader-PC._CB594538667_.jpg"
+              alt="Chicago" class="d-block w-100">
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://images-eu.ssl-images-amazon.com/images/G/31/img21/Wireless/Shreyansh/BAU/Unrexc/D70978891_INWLD_BAU_Unrec_Uber_PC_Hero_3000x1200._CB594707876_.jpg"
+              alt="New York" class="d-block w-100">
+          </div>
+        </div>
+
+        <!-- Left and right controls/icons -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+      <div class="container" id="ca1">
+        <div class="card-container">
+          <div class="row justify-content-center mt-3">
+            <div class="col-sm-6 col-md-4 col-lg-3">
+              <div class="card custom-card mb-3">
+                <div class="card-header">
+                  Appliances for your home
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <div class="d-flex justify-content-center">
+                        <a href="{% url 'categories' category_name='AC' %}">
+                          <img
+                          src="https://images-eu.ssl-images-amazon.com/images/G/31/IMG15/Irfan/GATEWAY/MSO/Appliances-QC-PC-186x116--B08RDL6H79._SY116_CB667322346_.jpg"
+                          width="150px" height="100px" class="img-fluid" alt="Image 1">
+                      </div></a>
+                      <div class="caption text-center">A/C</div>
+                    </div>
+                    <div class="col">
+                      <div class="d-flex justify-content-center">
+                        <a href="{% url 'categories' category_name='Refrigerators' %}">
+                        <img
+                          src="https://images-eu.ssl-images-amazon.com/images/G/31/IMG15/Irfan/GATEWAY/MSO/Appliances-QC-PC-186x116--B08345R1ZW._SY116_CB667322346_.jpg"
+                          width="150px" height="100px" class="img-fluid" alt="Image 2">
+                      </div></a>
+                      <div class="caption text-center">Refrigerators</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="d-flex justify-content-center">
+                        <a href="{% url 'categories' category_name='microwaves' %}">
+                        <img
+                          src="https://images-eu.ssl-images-amazon.com/images/G/31/IMG15/Irfan/GATEWAY/MSO/Appliances-QC-PC-186x116--B07G5J5FYP._SY116_CB667322346_.jpg"
+                          width="150px" height="100px" class="img-fluid" alt="Image 3">
+                      </div></a>
+                      <div class="caption text-center">Microwaves</div>
+                    </div>
+                    <div class="col">
+                      <div class="d-flex justify-content-center">
+                        <a href="{% url 'categories' category_name='washing machine' %}">
+                        <img
+                          src="https://images-eu.ssl-images-amazon.com/images/G/31/IMG15/Irfan/GATEWAY/MSO/186x116---wm._SY116_CB667322346_.jpg"
+                          width="150px" height="100px" class="img-fluid" alt="Image 4">
+                      </div></a>
+                      <div class="caption text-center">Washing machines</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+              <div class="card custom-card mb-3">
+                <div class="card-header">
+                  Offer zone
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <div class="d-flex justify-content-center mt-4">
+                        <a href="{% url 'categories' category_name='laptop' %}">
+                        <img
+                          src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/Electronics/Clearance/Clearance_store_Desktop_CC_1x._SY304_CB628315133_.jpg"
+                          width="200px" height="400px" class="img-fluid" alt="Image 1">
+                      </div></a>
+                      <div class="caption text-center">Laptops</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+              <div class="card custom-card mb-3">
+                <div class="card-header">
+                  Styles for You
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <div class="d-flex justify-content-center">
+                        <a href="{% url 'categories' category_name='Gents' %}">
+                        <img
+                          src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/Fashion/Gateway/BAU/BTF-Refresh/May/PF_MF/MF-1-186-116._SY116_CB636110853_.jpg"
+                          width="150px" height="100px" class="img-fluid" alt="Image 1">
+                      </div></a>
+                      <div class="caption text-center">Men</div>
+                    </div>
+                    <div class="col">
+                      <div class="d-flex justify-content-center">
+                        <a href="{% url 'categories' category_name='Ladies' %}">
+                        <img
+                          src="https://images-eu.ssl-images-amazon.com/images/G/31/img20/Events/GWBdaystore/Artboard_2QC2_1x._SY116_CB662999955_.jpg"
+                          width="150px" height="100px" class="img-fluid" alt="Image 2">
+                      </div></a>
+                      <div class="caption text-center">Women</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="d-flex justify-content-center">
+                        <a href="{% url 'categories' category_name='watches' %}">
+                        <img
+                          src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/Fashion/Gateway/BAU/BTF-Refresh/May/PF_MF/MF-3-186-116._SY116_CB636110853_.jpg"
+                          width="150px" height="100px" class="img-fluid" alt="Image 3">
+                      </div></a>
+                      <div class="caption text-center">watches</div>
+                    </div>
+                    <div class="col">
+                      <div class="d-flex justify-content-center">
+                        <a href="{% url 'categories' category_name='bags & luggage' %}">
+                        <img
+                          src="https://images-eu.ssl-images-amazon.com/images/G/31/img22/Fashion/Gateway/BAU/BTF-Refresh/May/PF_MF/MF-4-186-116._SY116_CB636110853_.jpg"
+                          width="150px" height="100px" class="img-fluid" alt="Image 4">
+                      </div></a>
+                      <div class="caption text-center">Bags & luggage</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card position-relative" style="height: 340px;">
+            <img class="card-img"
+              src="https://img.freepik.com/premium-vector/seamless-pattern-topic-digital-gadgets-modern-electronics-itemsvector-flat-cartoon-graphics_686727-28.jpg?w=2000"
+              alt="" height="200px">
+            <div class="overlay d-flex flex-column justify-content-center align-items-center">
+              <h4 class="card-title text-white">Best of Electronics</h4>
+              <a href="{% url 'electronics_categories_view' category_names='laptop,mobile' %}" class="btn btn-primary mt-3">VIEW ALL</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="main-carousel" data-flickity='{ "contain": true }'>
+            <div class="cell">
+              <img src="https://m.media-amazon.com/images/I/716x1581IrL._SY450_.jpg" alt="" height="320px" width="300px">
+              <p class="bg-light text-center">Asus Laptop  <i class="fa fa-laptop" aria-hidden="true"></i></p>
+            </div>
+            <div class="cell">
+              <img src="https://m.media-amazon.com/images/I/41btixsj7uL._SX300_SY300_QL70_FMwebp_.jpg" alt="" height="320px" width="300px">
+              <p class="bg-light text-center">Samsung <i class="fa fa-mobile" aria-hidden="true"></i> </p>
+            </div>
+            <div class="cell">
+              <img src="https://m.media-amazon.com/images/I/817vyrOUqmL._SX679_.jpg" alt="" height="320px" width="300px">
+              <p class="bg-light text-center">One Plus <i class="fa fa-mobile" aria-hidden="true"></i></p>
+            </div>
+            <div class="cell">
+              <img src="https://m.media-amazon.com/images/I/41Sdiip5sJL._SX300_SY300_QL70_FMwebp_.jpg" alt="" height="320px" width="300px">
+              <p class="bg-light text-center">hp Laptop <i class="fa fa-laptop" aria-hidden="true"></i></p>
+            </div>
+            <div class="cell">
+              <img src="https://m.media-amazon.com/images/I/51gns9dlT+L._SX679_.jpg" alt="" height="320px" width="300px">
+              <p class="bg-light text-center">IDEAPAD Laptop <i class="fa fa-laptop" aria-hidden="true"></i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><br><br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-9">
+          <div class="main-carousel" data-flickity='{ "contain": true }'>
+            <div class="cell">
+              <img src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/7/0/tr:w-480,/701373bEE23GD083KUSCYELLOW_1.jpg?rnd=20200526195200" alt="" height="320px" width="300px">
+              <p class="bg-light text-center">Aurelia</p>
+            </div>
+            <div class="cell">
+              <img src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/p/d/tr:w-480,/pd-94-1.jpg?rnd=20200526195200" alt="" height="320px" width="300px">
+              <p class="bg-light text-center">Girls</p>
+            </div>
+            <div class="cell">
+              <img src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/2/6/tr:w-480,/2649933AN4190_1.jpg?rnd=20200526195200" alt="" height="320px" width="300px">
+              <p class="bg-light text-center">Boys fashion</p>
+            </div>
+            <div class="cell">
+              <img src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/6/a/tr:w-480,/6a45f1fTBH-BUFFET-OL_1.jpg?rnd=20200526195200" alt="" height="320px" width="300px">
+              <p class="bg-light text-center">Gents</p>
+            </div>
+            <div class="cell">
+              <img src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/d/6/tr:w-480,/d6d75deNYFDKDPI01888_1.jpg?rnd=20200526195200" alt="" height="320px" width="300px">
+              <p class="bg-light text-center">watches</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card position-relative" style="height: 340px;">
+            <img class="card-img"
+              src="https://img.freepik.com/free-vector/people-shopping-with-bags_24908-56785.jpg?w=740&t=st=1686933653~exp=1686934253~hmac=2a4a06e77200ec2e0f7086af98b229a4197d1fcfe70f1f9f39c617327fe0dd95"
+              alt="" height="200px">
+            <div class="overlay d-flex flex-column justify-content-center align-items-center">
+              <h4 class="card-title text-white">Best of Fashion</h4>
+              <a href="#" class="btn btn-primary mt-3">VIEW ALL</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><br><br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card position-relative" style="height: 340px;">
+            <img class="card-img"
+              src="https://img.freepik.com/free-vector/brown-sofa-furniture-with-lamp-tree-isolated-white-background_1308-53106.jpg?w=740&t=st=1686933742~exp=1686934342~hmac=8868c942e6c0238e877132630984198e3ec1f543a28fb3d2a5a443383b66d8dd"
+              alt="" height="200px">
+            <div class="overlay d-flex flex-column justify-content-center align-items-center">
+              <h4 class="card-title text-white">Best of Home</h4>
+              <a href="#" class="btn btn-primary mt-3">VIEW ALL</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="main-carousel" data-flickity='{ "contain": true }'>
+            <div class="cell">
+              <img src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/1/2/tr:w-480,/12f6df5D691C--40x30Inches-Stretched_1.jpg?rnd=20200526195200" alt="Image 1"height=320px width="300px">
+              <p class="bg-light text-center">Frame Art</p>
+            </div>
+            <div class="cell">
+              <img src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/p/u/tr:w-480,/pure-8907895058227_1_b053dc9b.jpg?rnd=20200526195200" alt="Image 1"height=320px width="300px">
+              <p class="bg-light text-center">Metal decor</p>
+            </div>
+            <div class="cell">
+              <img src="https://m.media-amazon.com/images/I/61BsJSlJl9L._SY445_SX342_QL70_FMwebp_.jpg" alt="Image 1"height=320px width="300px">
+              <p class="bg-light text-center">Stand Lamp</p>
+            </div>
+            <div class="cell">
+              <img src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/1/c/tr:w-480,/1cb15f6IH0C711_1.jpg?rnd=20200526195200" alt="Image 1"height=320px width="300px">
+              <p class="bg-light text-center">Wall Lamp</p>
+            </div>
+            <div class="cell">  
+              <img src="https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/1/b/tr:w-480,/1bd68afNYKFF_THEAY00000084_1.jpg?rnd=20200526195200" alt="Image 1"height=320px  width="300px">
+              <p class="bg-light text-center">Wall Clock</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+
+    <footer class="bg-dark text-light">
+      <div class="container py-4">
+        <div class="text-center">
+          <a href="#" class=" btn-back-to-top mb-3" style="color: aliceblue; text-decoration: none;">Back to Top</a>
+        </div>
+        <hr class="my-4">
+        <br>
+        <div class="row">
+          <div class="col-md-3">
+            <h5>Company</h5>
+            <ul class="list-unstyled">
+              <li><a class="text-light" style="text-decoration: none;" href="#">About Us</a></li>
+              <li><a class="text-light" style="text-decoration: none;" href="#">Contact Us</a></li>
+              <li><a class="text-light" style="text-decoration: none;" href="#">Terms and Conditions</a></li>
+              <li><a class="text-light" style="text-decoration: none;" href="#">Privacy Policy</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h5>Categories</h5>
+            <ul class="list-unstyled">
+              <li><a class="text-light" style="text-decoration: none;" href="#">Electronics</a></li>
+              <li><a class="text-light" style="text-decoration: none;" href="#">Fashion</a></li>
+              <li><a class="text-light" style="text-decoration: none;" href="#">Home</a></li>
+              <li><a class="text-light" style="text-decoration: none;" href="#">Appliances</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h5>Customer Support</h5>
+            <ul class="list-unstyled">
+              <li><a class="text-light" style="text-decoration: none;" href="#">FAQ</a></li>
+              <li><a class="text-light" style="text-decoration: none;" href="#">Shipping Information</a></li>
+              <li><a class="text-light" style="text-decoration: none;" href="#">Returns and Exchanges</a></li>
+              <li><a class="text-light" style="text-decoration: none;" href="#">Track Your Order</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h5>Stay Connected</h5>
+            <ul class="list-unstyled">
+              <li><a class="text-light" style="text-decoration: none;" href="#"><i style="color: #4867AA;"
+                    class="fa fa-facebook"></i> Facebook</a></li>
+              <li><a class="text-light" style="text-decoration: none;" href="#"><i style="color: #1DA1F2;"
+                    class="fa fa-twitter"></i> Twitter</a></li>
+              <li><a class="text-light" style="text-decoration: none;" href="#"><i style="color: #E1306C;"
+                    class="fa fa-instagram"></i> Instagram</a></li>
+              <li><a class="text-light" style="text-decoration: none;" href="#"><i style="color: #FF0000;"
+                    class="fa fa-youtube-play"></i> Youtube</a></li>
+            </ul>
+          </div>
+        </div>
+        <hr class="bg-light my-4">
+        <div class="container-fluid bg-dark text-center">
+          <div class="row">
+            <div class="col-md-12">
+              <p class="text-light">&copy; 2023 In Bloom. All rights reserved.</p>
+            </div>
+          </div>
+        </div>
+    </footer>
+
+
+    <script>
+      var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+      var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var backToTopButton = document.querySelector('.btn-back-to-top');
+        window.addEventListener('scroll', function () {
+          if (window.pageYOffset > 200) {
+            backToTopButton.style.display = 'block';
+          } else {
+            backToTopButton.style.display = 'none';
+          }
+        });
+
+        backToTopButton.addEventListener('click', function (e) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+    </script>
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var dropdown = document.getElementById('categoryDropdown');
+    dropdown.addEventListener('click', function(event) {
+      event.preventDefault();
+      var selectedCategory = event.target.innerText.trim();
+      var url = '/categories/' + encodeURIComponent(selectedCategory) + '/';
+      window.location.href = url;
+    });
+  });
+</script> -->
+<script type="text/javascript">
+  $('.main-carousel').flickity({
+    // options
+    cellAlign: 'left',
+    wrapAround: true,
+    freeScroll: true
+  });
+</script>
+
+</body>
+
+</html>

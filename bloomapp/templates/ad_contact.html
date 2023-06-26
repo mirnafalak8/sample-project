@@ -1,0 +1,43 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 600px;
+      margin: auto;
+      height: 300px;
+    }
+
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+</style>
+<br>
+<h2 class="text-center">Comments</h2>
+<div class="container mt-5">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Message</th>
+        </tr>
+        {% for contact in contacts %}
+        <tr>
+            <td>{{ contact.name }}</td>
+            <td>{{ contact.email }}</td>
+            <td>{{ contact.message }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<br><br> <br>
+{% endblock %}

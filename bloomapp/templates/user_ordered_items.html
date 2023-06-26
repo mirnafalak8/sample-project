@@ -1,0 +1,48 @@
+{% extends 'main.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="text-center">User Ordered Items</h1>
+
+    <div class="table-responsive mt-4">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order_item in order_items %}
+            <tr>
+              <td>{{ order_item.order.user.username }}</td>
+              <td>{{ order_item.product.name }}</td>
+              <td>{{ order_item.quantity }}</td>
+              <td>{{ order_item.product.price }}</td>
+              <td>
+                {% if order_item.order.status == 'P' %}
+                  <form action="{% url 'confirm_order' order_item.order.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-sm">Confirm</button>
+                  </form>
+                  <form action="{% url 'cancel_order' order_item.order.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5">No ordered items available.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br><br>
+{% endblock %}

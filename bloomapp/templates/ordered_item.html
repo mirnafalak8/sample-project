@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br><br>
+<div class="container mt-5">
+  <h1 class="text-center">Ordered Items</h1>
+  <br>
+  <div class="table-responsive">
+    <table class="table mt-4 table-striped">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Image</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ordered_item in ordered_items %}
+          <tr>
+            <td>{{ ordered_item.order.id }}</td>
+            <td>{{ ordered_item.product.name }}</td>
+            <td>{{ ordered_item.quantity }}</td>
+            <td><i class="fa fa-inr"></i>{{ ordered_item.product.price }}</td>
+            <td><img src="{{ ordered_item.product.image.url }}" alt="{{ ordered_item.product.name }}" width="50"></td>
+            <td>{{ ordered_item.order.get_status_display }}</td>
+            <td>
+              {% if ordered_item.order.status == 'C' %}
+              <a href="{% url 'place_order_page' %}" class="btn btn-success order-button" onclick="disableOrderButton(this, '{{ ordered_item.id }}')">Order Now</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7">No ordered items available.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<br><br><br>
+
+<!-- <script>
+  function disableOrderButton(button) {
+    button.disabled = true;
+    button.removeEventListener('click', disableOrderButton);  // Remove the click event listener
+  }
+</script> -->
+<script>
+  function disableOrderButton(button, orderedItemId) {
+    button.disabled = true;
+    button.removeEventListener('click', disableOrderButton);
+
+    // Add an AJAX request to update the server-side status
+    var url = '/update_order_status/' + orderedItemId + '/';
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        // Handle the success response if needed
+      }
+    };
+    xhr.send();
+  }
+</script>
+
+{% endblock %}

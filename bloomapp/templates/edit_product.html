@@ -1,0 +1,43 @@
+{% extends 'main.html' %}
+{% block content %}
+<style>
+   
+    #f2{
+        width: 800px;
+        margin: auto;
+    }
+</style>
+<br>
+<div class="container">
+<h1  class="alert alert-info text-center mb-5 w-51">Edit Product</h1>
+<form method="post" action="/p_edit_form/{{ product.id }}" enctype="multipart/form-data" id="f2">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" value="{{ product.name }}" id="name" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select class="form-control" id="category" name="select" required>
+            {% for i in categories %}
+            <option value="{{ i.id }}" {% if product.category_id == i.id %}selected{% endif %}>{{ i.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description">{{ product.description }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="number" class="form-control" value="{{ product.price }}" id="price" name="price" required>
+    </div>
+    <div class="mb-3">
+        <label for="image" class="form-label">Image</label>
+        <input type="file" class="form-control" value="{{ product.image }}" id="image" name="file">
+    </div>
+    <button class="btn btn-primary  w-100" type="submit">Update</button>
+</form>
+</div>
+<br><br><br>
+{% endblock %}

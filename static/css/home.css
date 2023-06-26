@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+*{
+    font-family: "poppins" , sans-serif;
+}
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #A14F81;
+    border-radius: 25px;
+
+  }
+  .flex-container > div {
+    /* background-color: #f1f1f1; */
+    color: white;
+    width: 100px;
+    margin: 10px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 23px;
+  }  
+  .nav-link{
+    color: #A14F81;
+    font-size: 20px;
+  }
+  #nav1 .nav-link:hover {
+    background-color: transparent;
+    border-color: #343a40;
+    color: #343a40;
+}
+.flex{
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 15px;
+}
+.div1 {
+    width: 70px;
+    height: 50px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .navbar{
+    background-color:#ffff;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  #nav2{
+    background-color: #3F1B32;
+    text-decoration: none;
+    color: white;
+  }
+  #nav2 li a{
+    font-size: 18px;
+  }
+  .div2 a{
+    color: #A14F81;
+    padding: 5px 10px;
+    justify-content: center;
+  
+  }
+  body{
+    min-height: 100vh;
+    width: 100%;
+    background-color: #EEECEB;
+  }
+  #demo.offcanvas {
+    background-image: url('https://images.pexels.com/photos/9454915/pexels-photo-9454915.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-size: cover;
+    background-position: center;
+  }
+ .offcanvas-body a{
+  font-size: 15px;
+  text-decoration: none;
+  color: whitesmoke;
+ }
+ .menu-link:hover {
+  background: transparent;
+    color: #fff;
+    /* width: 120px; */
+    border: 2px solid #fff;
+    border-radius: 25px;
+    padding: 10px;
+    box-shadow: 0px 10px 49px -14px rgba(0, 0,0, 0.7);
+  /* background-color: #F8E8EE;
+  border-radius: 10px;
+  box-shadow:0px 10px 40px -10px rgba(0, 0,0, 0.7);
+  color: #A14F81;
+  padding: 12px; */
+}
+

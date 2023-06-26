@@ -1,0 +1,34 @@
+{% extends 'main.html' %}
+{% block content %}
+<style>
+    #categoryForm {
+      width: 600px;
+      margin: 25px 25px 50px 250px;
+      justify-content: center;
+      align-items: center;
+    }
+</style>
+<h2 class="text-center">Category Form</h2><br>
+<div class="container">
+  <form method="post" action="{% url 'category_page' %}" id="categoryForm">
+    <h3 class="alert alert-info text-center mb-5 w-51">
+      Add Category
+    </h3>
+    {% csrf_token %}
+    <input type="text" class="form-control" placeholder="Enter your category" name="name"><br>
+    <button type="submit" class="btn btn w-100" style="background-color: palevioletred;color: black;">Submit</button>
+  </form>
+  <br>
+  <div class="main-content d-flex justify-content-center">
+<div class="w-50">
+  <h3>List of Categories:</h3>
+  <ul id="categoryList" class="list-group">
+    {% for category in categories %}
+    <li class="list-group-item">{{ category.name }}</li>
+    {% endfor %}
+  </ul>
+</div>
+</div>
+</div>
+<br><br><br>
+{% endblock %}
